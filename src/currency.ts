@@ -6,3 +6,5 @@ export type CurrencyTable = { [key in Currency]?: number };
 export const isCurrency = (c: string) => {
   return currencies.includes(c);
 };
+
+export const SYNC_TAG = "currency-data";

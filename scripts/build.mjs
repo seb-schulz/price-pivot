@@ -51,6 +51,7 @@ const contextOpts = {
   define: {
     ENV: serveMode || watchMode ? '"development"' : '"production"',
     GIT_HASH: `"${git_hash}"`,
+    WITH_SW: args.includes("--without-sw") ? '"0"' : '"1"',
   },
   bundle: true,
   minify: !!args.includes("--minify"),
@@ -62,6 +63,7 @@ const web_ctx = await esbuild.context({
   entryPoints: [
     "src/index.html",
     "src/index.tsx",
+    "src/sw.ts",
     "src/manifest.json",
     "src/favicon.ico",
     "src/favicon.svg",
