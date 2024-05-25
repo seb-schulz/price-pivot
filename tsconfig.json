@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["ES2017", "DOM"],
+    "moduleResolution": "node",
+    "module": "esnext",
+    "jsx": "react-jsx"
+  },
+  "include": ["src"]
+}

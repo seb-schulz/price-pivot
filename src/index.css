@@ -1,0 +1,72 @@
+.conversion-factor-col {
+  text-align: center;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+}
+
+#root > main {
+  display: grid;
+  grid-template-columns: 1fr 12ch 1fr;
+  gap: 0.5rem;
+  margin: 1rem;
+  align-self: baseline;
+}
+
+footer {
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+#convertion-rate {
+  grid-area: auto;
+  text-align: center;
+  align-self: center;
+  font-size: 1.2rem;
+}
+
+#currency-swapper {
+  text-align: center;
+}
+
+#currency-input input,
+#currency-output input {
+  text-align: right;
+}
+
+#currency-input {
+  grid-row: 1 / 3;
+}
+
+#currency-source,
+#currency-swapper,
+#currency-target {
+  grid-row: 3;
+}
+
+@media (max-width: 767.98px) {
+  #currency-input,
+  #convertion-rate,
+  #currency-output {
+    grid-column: 1 / -1;
+  }
+
+  #currency-source,
+  #currency-swapper,
+  #currency-target {
+    grid-row: 5;
+  }
+}
