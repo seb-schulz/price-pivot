@@ -1,0 +1,21 @@
+{
+  "name": "price-pivot",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/apt-get-packages:1": {
+      "packages": "bash-completion"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint"]
+    }
+  },
+  "runArgs": ["--userns=keep-id"],
+  "containerUser": "vscode",
+  "postCreateCommand": "npm ci || true"
+}
