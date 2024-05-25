@@ -40,6 +40,8 @@ Instructions on [how to contribute to the project](CONTRIBUTING.md)
 - Push latest version with `git push origin vX.Y.Z`
 - Publish draft of latest release on <https://github.com/seb-schulz/price-pivot/releases/latest>
 
+Use `curl -L 'https://github.com/seb-schulz/price-pivot/releases/latest/download/version.txt'` for retrieving the latest version.
+
 ## License
 
 - MIT License
