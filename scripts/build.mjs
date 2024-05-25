@@ -3,8 +3,7 @@
 import * as esbuild from "esbuild";
 import { execSync } from "child_process";
 import http from "node:http";
-
-import fs from "fs";
+import fs from "node:fs";
 
 function clearPlugin(path) {
   return {
@@ -19,6 +18,27 @@ function clearPlugin(path) {
   };
 }
 
+function sheBang() {
+  return {
+    name: "Insert SheBash",
+    setup: (build) => {
+      build.onEnd((result) => {
+        if (result.errors.length === 0) {
+          const outputs = result.metafile.outputs;
+
+          for (const file in outputs) {
+            if (outputs[file].entryPoint) {
+              const originalContent = fs.readFileSync(file, "utf8");
+              const newContent = `#!/usr/bin/env node\n${originalContent}`;
+              fs.writeFileSync(file, newContent, "utf8");
+            }
+          }
+        }
+      });
+    },
+  };
+}
+
 const args = process.argv.slice(2); // Skip the first two elements
 const watchMode = args.includes("-w") || args.includes("--watch");
 const serveMode = args.includes("-s") || args.includes("--serve");
@@ -27,7 +47,18 @@ const git_hash = execSync("git describe --abbrev --dirty --always")
   .toString()
   .trim();
 
-let ctx = await esbuild.context({
+const contextOpts = {
+  define: {
+    ENV: serveMode || watchMode ? '"development"' : '"production"',
+    GIT_HASH: `"${git_hash}"`,
+  },
+  bundle: true,
+  minify: !!args.includes("--minify"),
+  format: "esm",
+};
+
+const web_ctx = await esbuild.context({
+  ...contextOpts,
   entryPoints: [
     "src/index.html",
     "src/index.tsx",
@@ -35,15 +66,8 @@ let ctx = await esbuild.context({
     "src/favicon.ico",
     "src/favicon.svg",
   ],
-  define: {
-    ENV: serveMode || watchMode ? '"development"' : '"production"',
-    GIT_HASH: `"${git_hash}"`,
-  },
-  bundle: true,
+  outdir: "dist/browser",
   platform: "browser",
-  outdir: "dist",
-  minify: !!args.includes("--minify"),
-  format: "esm",
   publicPath: "/",
   loader: {
     ".html": "copy",
@@ -53,18 +77,31 @@ let ctx = await esbuild.context({
     ".woff2": "copy",
     ".woff": "copy",
   },
-  plugins: [clearPlugin("dist")],
+  plugins: [clearPlugin("dist/browser")],
+});
+
+const node_ctx = await esbuild.context({
+  ...contextOpts,
+  entryPoints: ["src/fetch-data.ts"],
+  outdir: "dist/node",
+  platform: "node",
+  target: "node18",
+  metafile: true,
+  plugins: [clearPlugin("dist/node"), sheBang()],
 });
 
 if (serveMode && watchMode) {
   console.log("serve mode and watch mode are mutually exclusive");
-  await ctx.dispose();
+  await web_ctx.dispose();
+  await node_ctx.dispose();
 } else if (watchMode) {
-  await ctx.watch();
+  await web_ctx.watch();
+  await node_ctx.watch();
   console.log("watching...");
 } else if (serveMode) {
-  await ctx.watch();
-  const { host, port } = await ctx.serve();
+  await web_ctx.watch();
+  await node_ctx.watch();
+  const { host, port } = await web_ctx.serve();
 
   let count = 0;
   http
@@ -118,6 +155,8 @@ if (serveMode && watchMode) {
 
   console.log(`serve page under ${host}:3000`);
 } else {
-  await ctx.rebuild();
-  await ctx.dispose();
+  await web_ctx.rebuild();
+  await node_ctx.rebuild();
+  await web_ctx.dispose();
+  await node_ctx.dispose();
 }
