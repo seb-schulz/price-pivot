@@ -33,6 +33,13 @@ TBD
 
 Instructions on [how to contribute to the project](CONTRIBUTING.md)
 
+## Releasing
+
+- Ensure clean git working directory
+- Run `npm version minor` to bump verion and create tag
+- Push latest version with `git push origin vX.Y.Z`
+- Publish draft of latest release on <https://github.com/seb-schulz/price-pivot/releases/latest>
+
 ## License
 
 - MIT License
