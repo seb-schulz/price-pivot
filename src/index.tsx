@@ -4,6 +4,7 @@ import "./index.css";
 
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
+import App from "./app";
 
 new EventSource("/esbuild").addEventListener("change", () => location.reload());
 
@@ -14,7 +15,7 @@ function rootElement() {
   const root = ReactDOM.createRoot(element);
   root.render(
     <React.StrictMode>
-      <p>Hello World!</p>
+      <App />
     </React.StrictMode>
   );
   return element;

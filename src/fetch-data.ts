@@ -1,13 +1,5 @@
 import { DOMParser } from "@xmldom/xmldom";
-
-const currencies = ["EUR", "USD", "SEK", "DKK", "GBP", "CHF", "CAD"];
-
-type Currency = "EUR" | "USD" | "SEK" | "DKK" | "GBP" | "CHF" | "CAD";
-type CurrencyTable = { [key in Currency]?: number };
-
-const isCurrency = (c: string) => {
-  return currencies.includes(c);
-};
+import { Currency, CurrencyTable, isCurrency } from "./currency";
 
 const EURO_FX_REF =
   "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
