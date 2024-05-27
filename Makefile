@@ -1,5 +1,8 @@
 NPM_BIN ?= $(shell which npm 2> /dev/null)
 VERSION ?= $(shell jq -r '.version' package.json)
+DOCKER_BIN ?= $(shell which podman 2> /dev/null)
+RENOVATE_REPOSITORIES ?= seb-schulz/price-pivot
+LOG_LEVEL ?= info
 
 -include Makefile.variables
 
@@ -20,3 +23,7 @@ release:
 .PHONY: install-npm-dependencies
 install-npm-dependencies:
 	npm ci || true
+
+.PHONY: check-updates
+check-updates:
+	./scripts/$@.sh
