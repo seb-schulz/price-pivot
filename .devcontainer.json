@@ -12,10 +12,18 @@
   "customizations": {
     "vscode": {
       "settings": {},
-      "extensions": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint"]
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
     }
   },
-  "runArgs": ["--userns=keep-id"],
+  "runArgs": [
+    "--userns=keep-id"
+  ],
   "containerUser": "vscode",
-  "postCreateCommand": "npm ci || true"
+  "postCreateCommand": "npm ci || true",
+  "forwardPorts": [
+    3000
+  ]
 }
