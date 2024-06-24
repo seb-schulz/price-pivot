@@ -17,23 +17,37 @@ const CACHE_VERSION = `v2-${git_hash}`;
 
 const deleteOldCaches = async () => {
   const cacheKeepList = [CACHE_VERSION];
-  const keyList = await caches.keys();
-  const cachesToDelete = keyList.filter((key) => !cacheKeepList.includes(key));
-  await Promise.all(
-    cachesToDelete.map(async (key: string) => {
-      await caches.delete(key);
-    })
-  );
+  try {
+    const keyList = await caches.keys();
+    const cachesToDelete = keyList.filter(
+      (key) => !cacheKeepList.includes(key)
+    );
+    await Promise.all(
+      cachesToDelete.map(async (key: string) => {
+        await caches.delete(key);
+      })
+    );
+  } catch (err) {
+    console.error("cannot delete outdated cache", err);
+  }
 };
 
 const addResourcesToCache = async (resources) => {
-  const cache = await caches.open(CACHE_VERSION);
-  await cache.addAll(resources);
+  try {
+    const cache = await caches.open(CACHE_VERSION);
+    await cache.addAll(resources);
+  } catch (error) {
+    console.error("cannot add resources to cache", error);
+  }
 };
 
 const putInCache = async (request, response) => {
-  const cache = await caches.open(CACHE_VERSION);
-  await cache.put(request, response);
+  try {
+    const cache = await caches.open(CACHE_VERSION);
+    await cache.put(request, response);
+  } catch (err) {
+    console.error("cannot put resources to cache", err);
+  }
 };
 
 const cacheFirst = async ({ request }) => {

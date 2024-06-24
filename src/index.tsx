@@ -53,7 +53,7 @@ if (ENV === "production" || WITH_SW === "1") {
           60 * 60 * 1000
         );
 
-        if ("SyncManager" in window) {
+        if (!!registration.active && "SyncManager" in window) {
           await registration.sync.register(SYNC_TAG);
           console.log("register sync", SYNC_TAG);
         }
