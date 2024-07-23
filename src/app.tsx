@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Button, Container, Form, InputGroup, Navbar } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  InputGroup,
+  Nav,
+  Navbar,
+} from "react-bootstrap";
 import { Currency, CurrencyTable, currencies, isCurrency } from "./currency";
 
 // @ts-expect-error ts(2552)
@@ -65,13 +72,38 @@ function CurrencyDropdown({
   );
 }
 
+type PersistentCurrencyKey = "sourceCurrency" | "targetCurrency";
+
+function usePersistentCurrency(
+  defaultCurrency: Currency,
+  key: PersistentCurrencyKey
+): [Currency, React.Dispatch<React.SetStateAction<Currency>>] {
+  const [val, setCurrency] = React.useState<Currency>(
+    (localStorage.getItem(key) as Currency) || defaultCurrency
+  );
+
+  return [
+    val,
+    (newVal) => {
+      localStorage.setItem(key, newVal as string);
+      return setCurrency(newVal);
+    },
+  ];
+}
+
 export default function App() {
   const currencyInputRef = React.useRef(null);
   const { allCurrencies, convertionRate, isLoading, lastUpdate } =
     useCurrencies();
 
-  const [sourceCurrency, setSourceCurrency] = React.useState<Currency>("USD");
-  const [targetCurrency, setTargetCurrency] = React.useState<Currency>("EUR");
+  const [sourceCurrency, setSourceCurrency] = usePersistentCurrency(
+    "USD",
+    "sourceCurrency"
+  );
+  const [targetCurrency, setTargetCurrency] = usePersistentCurrency(
+    "EUR",
+    "targetCurrency"
+  );
   const [sourceValue, setSourceValue] = React.useState<number>(null);
 
   if (isLoading) return <p>Loading...</p>;
@@ -84,6 +116,17 @@ export default function App() {
         <Navbar className="bg-body-tertiary">
           <Container>
             <Navbar.Brand>Price Pivot</Navbar.Brand>
+            <Nav className="ms-auto">
+              <Button
+                variant="outline-secondary"
+                onClick={() => {
+                  localStorage.clear();
+                  location.reload();
+                }}
+              >
+                <i className="bi bi-x-octagon"></i>
+              </Button>
+            </Nav>
           </Container>
         </Navbar>
       </header>
