@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "/usr/bin/env node scripts/build.mjs --minify",
-    "serve": "/usr/bin/env node scripts/build.mjs --serve"
+    "serve": "/usr/bin/env node scripts/build.mjs --serve --without-sw"
   },
   "dependencies": {
     "@types/react": "^18.3.2",
