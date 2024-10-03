@@ -1,4 +1,4 @@
-import { DOMParser } from "@xmldom/xmldom";
+import { DOMParser, Document } from "@xmldom/xmldom";
 import { Currency, CurrencyTable, isCurrency } from "./currency";
 
 const EURO_FX_REF =
@@ -35,7 +35,7 @@ function getAllCurrencies(doc: Document): {
       signal: AbortSignal.timeout(5000),
     });
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(await result.text());
+    const xmlDoc = parser.parseFromString(await result.text(), "text/xml");
     const currencies = getAllCurrencies(xmlDoc);
     console.log(JSON.stringify(currencies));
   } catch (err) {
