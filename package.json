@@ -20,6 +20,6 @@
   },
   "devDependencies": {
     "esbuild": "^0.24.0",
-    "prettier": "3.4.1"
+    "prettier": "3.4.2"
   }
 }
