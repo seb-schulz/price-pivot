@@ -1,29 +1,9 @@
 {
   "name": "price-pivot",
-  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers-contrib/features/apt-get-packages:1": {
-      "packages": "bash-completion"
-    }
-  },
-  "customizations": {
-    "vscode": {
-      "settings": {},
-      "extensions": [
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
-      ]
-    }
-  },
-  "runArgs": [
-    "--userns=keep-id"
-  ],
+  "image": "ghcr.io/sebatec-eu/base-devcontainer:1",
+  "features": {},
+  "runArgs": ["--userns=keep-id"],
   "containerUser": "vscode",
   "postCreateCommand": "npm ci || true",
-  "forwardPorts": [
-    3000
-  ]
+  "forwardPorts": [3000]
 }

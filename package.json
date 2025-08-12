@@ -9,9 +9,6 @@
     "serve": "/usr/bin/env node scripts/build.mjs --serve --without-sw"
   },
   "dependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@xmldom/xmldom": "^0.9.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "react": "^19.0.0",
@@ -19,6 +16,9 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
+    "@xmldom/xmldom": "0.9.8",
     "esbuild": "0.25.8",
     "prettier": "3.6.2"
   }
